@@ -8,6 +8,7 @@ Config.BikeSpawnerLocation = {
 Config.Vehicles = {
     'zentorno',
     'adder',
+    'bmx'
     -- Add other vehicles here
 }
 
