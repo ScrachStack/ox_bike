@@ -1,4 +1,3 @@
-
 Config = {}
 
 Config.BikeSpawnerLocation = {
@@ -13,3 +12,4 @@ Config.Vehicles = {
 }
 
 Config.MaxDistance = 50.0  -- Change this value to whatever distance you'd like
+Config.DefaultKey = 'k' -- This is button to open menu
