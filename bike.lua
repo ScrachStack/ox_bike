@@ -26,31 +26,36 @@ lib.registerMenu({
 end)
 
 function spawnveh(carro)
-    RequestModel(GetHashKey(carro))
-    while not HasModelLoaded(GetHashKey(carro)) do
+    local hash = joaat(carro)
+    RequestModel(hash)
+
+    while not HasModelLoaded(hash) do
         Citizen.Wait(100)
     end
+
     local playerPed = PlayerPedId()
     local pos = GetEntityCoords(playerPed)
-    local vehicle = CreateVehicle(GetHashKey(carro), pos.x, pos.y, pos.z, GetEntityHeading(playerPed), true, false)
+    local vehicle = CreateVehicle(hash, pos.x, pos.y, pos.z, GetEntityHeading(playerPed), true, false)
+
     SetPedIntoVehicle(playerPed, vehicle, -1)
-    if prevVehicle ~= nil then
+
+    if prevVehicle then
         SetEntityAsMissionEntity(prevVehicle, true, true)
         DeleteVehicle(prevVehicle)
     end
+    
     prevVehicle = vehicle
+    lib.notify({
+        title = 'Vehicle Spawned',
+        description = 'Your vehicle has been spawned.',
+        type = 'success'
+    })
 end
 
-RegisterCommand('+bike', function()
+
+RegisterCommand('bikespawner', function()
     if not IsPlayerNearLocation(Config.BikeSpawnerLocation) then
-        --[[ Commeneted out so it didnt spawn if someone hit button and not there you can add it or a Notification if you want
-        TriggerEvent('chat:addMessage', {
-            color = { 255, 0, 0},
-            multiline = true,
-            args = {"System", "You are too far away from the bike spawner location!"}
-        })
-            --]]
-        return
+return
     end
 
     if lib.getOpenMenu() ~= 'bike' then
@@ -58,4 +63,4 @@ RegisterCommand('+bike', function()
     end
 end)
 
-RegisterKeyMapping('+bike', 'Open the bike spawner', 'keyboard', Config.DefaultKey)
+RegisterKeyMapping('bikespawner', 'Open the bike spawner', 'keyboard', Config.DefaultKey)
